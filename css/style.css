@@ -1,0 +1,302 @@
+* {
+    box-sizing: border-box;
+    width: 100%;
+    color: #6a4949;
+  }
+  body {
+    width: 100%;
+    /* background-color: yellow;
+    display: flex; */
+  }
+  h1 {
+    text-align: center;
+    margin: 50px 0;
+    font-size: 20px;
+  }
+  .first-p {
+    color: #FF5685;
+    font-size: 40px;
+  }
+  .second-p {
+    color: #FEB25E;
+    font-size: 40px;
+  }
+  .first-c {
+    color: #6AC7E6;
+    font-size: 40px;
+  }
+
+  .container {
+    width: 100%;
+    display: flex;
+    margin: 20px;
+  }
+
+  /* 左サイドバー */
+  .side {
+    width: 20%;
+    background-color: pink;
+  }
+  /* チャットテキスト */
+  .chat_body {
+    width: 80%;
+    margin-left: 30px;
+  }
+
+  .name_list {
+    width: 100%;
+    display: flex;
+    margin: 10px 0;
+    flex: 1;
+  }
+
+  .name_a, .name_b {
+    width: 80%;
+    margin: auto 20px;
+    padding: 10px;
+    border: 1px solid #a3a0a0;
+    border-radius: 10px;
+  }
+
+  /* 送信ボタン */
+  .fa-regular {
+    color: pink;
+    font-size: 20px;
+    padding-top: -20px;
+  }
+
+
+  input {
+    /* width: 100%; */
+    padding: 10px;
+    display: block;
+    margin: 0 auto 50px;
+  }
+  
+  textarea {
+    /* width: 100%;
+    height: 200px; */
+    padding: 10px;
+    margin: 0 auto 50px;
+    display: block;
+    /* resize: none; */
+  }
+  
+  button {
+    /* width: 200px;
+    height: 50px; */
+    margin: 0 auto 50px;
+    display: block;
+    font-size: 16px;
+  }
+  
+  #output {
+    /* width: 500px;
+    display: block; */
+    overflow: scroll;
+    height: 500px;
+    border: 1px solid #ccc;
+    margin: 0 auto;
+    border-radius: 8px;
+    padding: 10px;
+  }
+/* 左右 */
+.b-left-wrapper,
+.b-right-wrapper {
+  margin: 0 auto 10px; /* 後続要素との距離は10px */
+  width: 100%;
+  min-height: 80px; /* アイコン画像の高さと同じ数値を入れます */
+}
+
+/* 左 */
+.b-left-wrapper {
+  padding-left: 50px; /* アイコン画像の横幅+吹き出しまでの距離 注意1 */
+}
+
+/* 右 */
+.b-right-wrapper {
+  padding-right: 50px; /* アイコン画像の横幅+吹き出しまでの距離 注意2 */
+  text-align: right;
+}
+
+/* 左右吹き出し共通 */
+.b-left,
+.b-right {
+  display: inline-block;
+  width: 100%;
+  max-width: 300px; /* 吹き出しの横幅最大値指定 */
+  background-color: white; /* 吹き出し背景色 */
+  border: 2px solid rgb(240,240,240); /* 吹き出しボーダー色 */
+  border-radius: 6px;
+  padding: 10px 15px;
+  position: relative;
+}
+
+/* 左右吹き出し角部分共通 */
+.b-left:before,
+.b-right:before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  background-color: white; /* 吹き出し背景色と同じ色を指定 */
+  border-bottom: 2px solid rgb(240,240,240); /* 吹き出しボーダー色と同じ色を指定 */
+  position: absolute;
+  top: 15px; /* 角の位置 吹き出し上辺から15px下 */
+}
+
+/* 左吹き出し角部分 */
+.b-left:before {
+  border-left: 2px solid rgb(240,240,240); /* 吹き出しボーダー色と同じ色を指定 */
+  left: -8px;
+  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+/* 右吹き出し角部分 */
+.b-right:before {
+  border-right: 2px solid rgb(240,240,240); /* 吹き出しボーダー色と同じ色を指定 */
+  right: -8px;
+  -webkit-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+}
+
+/* 左右アイコン共通 */
+.b-left:after,
+.b-right:after {
+  content: "";
+  width: 50px; /* アイコン横幅 */
+  height: 80px; /* アイコン縦幅 */
+  border-radius: 50%; /* アイコン円形指定 */
+  position: absolute;
+  top: 0;
+}
+
+/* 送信メッセージ */
+.send_message {
+  width: 100%;
+  display: flex;
+  margin-top: 30px;
+}
+.send_icon {
+  width: 10%;
+  margin-top: 10px;
+}
+.send_text {
+  margin: 0 5px;
+}
+#rtext {
+  border: 1px solid #a3a0a0;
+  border-radius: 10px;
+}
+
+#text {
+  border: 1px solid #a3a0a0;
+  border-radius: 10px;
+}
+
+/* スクロールバー */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: #ff8095;
+  border-radius: 5px;
+}
+::-webkit-scrollbar-track {
+  background: #ffe6ea;
+  border-radius: 5px;
+}
+
+  /* モーダルウィンドウのCSS */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  padding-top: 100px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0,0,0);
+  background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+.modal_text {
+  margin-bottom: 10px;
+}
+.modal-w {
+  display: flex;
+  width: 100%;
+}
+.close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+.storage {
+  width: 30%;
+  padding: 10px;
+  margin: 20px;
+  display: inline-block;
+  position: relative;
+  text-decoration: none;
+  color: #f9a9ae;
+  width: 120px;
+  height: 50px;
+  line-height: 50px;
+  border-radius: 5px;
+  text-align: center;
+  overflow: hidden;
+  font-weight: bold;
+  background: linear-gradient(#fed6e3 0%, #ffaaaa 100%);
+  text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.66);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.28);
+}
+.storage:active {
+  -webkit-transform: translateY(2px);
+  transform: translateY(2px);/*沈むように*/
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0.15);
+  background-image: linear-gradient(#fed6e3 0%, #ffbcbc 100%);
+}
+.delete {
+  width: 30%;
+  padding: 10px;
+  margin: 20px;
+  display: inline-block;
+  position: relative;
+  text-decoration: none;
+  color: #f9a9ae;
+  width: 120px;
+  height: 50px;
+  line-height: 50px;
+  border-radius: 5px;
+  text-align: center;
+  overflow: hidden;
+  font-weight: bold;
+  background: linear-gradient(#f44079 0%, #821c1c 100%);
+  text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.66);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.28);
+}
+.delete:active {
+  -webkit-transform: translateY(2px);
+  transform: translateY(2px);/*沈むように*/
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0.15);
+  background-image: linear-gradient(#f60f58 0%, #790505 100%);
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}

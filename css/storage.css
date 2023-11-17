@@ -1,0 +1,66 @@
+* {
+    box-sizing: border-box;
+    width: 100%;
+    color: #6a4949;
+  }
+  body {
+    width: 100%;
+    /* background-color: yellow;
+    display: flex; */
+  }
+  h1 {
+    text-align: center;
+    margin: 50px 0;
+    font-size: 20px;
+  }
+  .first-p {
+    color: #FF5685;
+    font-size: 40px;
+  }
+  .second-p {
+    color: #FEB25E;
+    font-size: 40px;
+  }
+  .first-c {
+    color: #6AC7E6;
+    font-size: 40px;
+  }
+  
+  .container {
+    width: 100%;
+    display: flex;
+    margin: 20px;
+  }
+  
+  /* 左サイドバー */
+  .side {
+    width: 20%;
+    background-color: pink;
+  }
+  
+  /* テキスト */
+  .smessage {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px; /* 各要素間に少しスペースを設ける */
+  }
+  
+  .storage_content {
+    width: 40%;
+    display: flex;
+    flex-direction: column; /* テキストと削除ボタンを縦に並べる */
+    align-items: center; /* 中央揃え */
+    margin: 20px;
+    padding: 10px;
+    border: 1px solid #ddd; /* 枠線を設定 */
+    border-radius: 5px; /* 枠の角を丸くする */
+  }
+  
+  .storage_message {
+    margin-bottom: 20px; /* テキストと削除ボタンの間にスペースを設ける */
+  }
+  
+  .storage_delete {
+    /* 削除ボタンのスタイル設定（必要に応じて） */
+  }
+  
