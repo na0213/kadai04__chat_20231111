@@ -8,6 +8,10 @@
     /* background-color: yellow;
     display: flex; */
   }
+  .top_icon {
+    width: 5%;
+    margin: 10px auto auto 20px;
+  }
   h1 {
     text-align: center;
     margin: 50px 0;
@@ -243,30 +247,24 @@
   font-size: 28px;
   font-weight: bold;
 }
-.storage {
-  width: 30%;
-  padding: 10px;
-  margin: 20px;
-  display: inline-block;
-  position: relative;
-  text-decoration: none;
-  color: #f9a9ae;
-  width: 120px;
-  height: 50px;
-  line-height: 50px;
-  border-radius: 5px;
+a.btn--orange {
+  color: #fff;
+  background-color: #eb6100;
+  border-bottom: 5px solid #b84c00;
+  width: 100px;
+  height: 80px;
   text-align: center;
-  overflow: hidden;
-  font-weight: bold;
-  background: linear-gradient(#fed6e3 0%, #ffaaaa 100%);
-  text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.66);
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.28);
+  padding: 20px;
 }
-.storage:active {
-  -webkit-transform: translateY(2px);
-  transform: translateY(2px);/*沈むように*/
-  box-shadow: 0 0 1px rgba(0, 0, 0, 0.15);
-  background-image: linear-gradient(#fed6e3 0%, #ffbcbc 100%);
+a.btn--orange:hover {
+  margin-top: 3px;
+  color: #fff;
+  background: #f56500;
+  border-bottom: 2px solid #b84c00;
+}
+a.btn--shadow {
+  -webkit-box-shadow: 0 3px 5px rgba(0, 0, 0, .3);
+  box-shadow: 0 3px 5px rgba(0, 0, 0, .3);
 }
 .delete {
   width: 30%;
@@ -299,4 +297,13 @@
   color: #000;
   text-decoration: none;
   cursor: pointer;
+}
+.icon {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+#output_top2 {
+  text-align: end;
 }

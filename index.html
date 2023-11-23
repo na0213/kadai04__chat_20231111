@@ -4,13 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="../css/reset.css">
-    <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="./vendor/tailwind/tailwind.css">
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="src/vendor/tailwind/tailwind.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <header>
-
+    <div class="top_icon">
+        <p class="top-logo" onclick="location.href='top.html'"><img src="img/icon.png" alt=""></p>
+    </div>
 </header>
 <body>
     <p class="text-2xl mt-5 mb-10 text-center"><span class="first-p">P</span>OJI<span class="second-p">P</span>OJI <span class="first-c">C</span>HAT</p>
@@ -19,22 +21,15 @@
         <div class="side">
           <ul>
             <li class="mt-3 ml-3 mb-3">
-                <a id="friends" href="index.html">FRIENDS</a>
+                <a id="friends" href="index.html">TALK</a>
             </li>
             <li class="mt-3 ml-3 mb-3">
-                <a id="pets" href="pet.html">PET</a>
-            </li>
-            <li class="mt-3 ml-3 mb-3">
-                <a id="storage" href="storage.html">保存</a>
+                <a id="storage" href="storage.html">STORAGE</a>
             </li>
           </ul>
         </div>
 
         <div class="chat_body">
-            <!-- <div class="name_list">
-                    <input type="text" class="name_a">
-                    <input type="text" class="name_b">
-            </div> -->
             
             <div id="output">
                 <div id="myModal" class="modal">
@@ -42,18 +37,20 @@
                       <span class="close">&times;</span>
                       <p id="modalText" class="modal_text">
                         <ul class="modal-w">
-                            <a href="#" class="storage">保存</a>
-                            <a href="#" class="delete">削除</a>
-                            <!-- <li class="storage">保存</li>
-                            <li class="delete">削除</li> -->
+                            <a href="" class="storage btn--orange btn--cubic btn--shadow">保存</a>
                         </ul>
                       </p>
                     </div>
                 </div>
             </div>
-
+            <div class="icon">
+                <p id="output_top_image"></p>
+                <p id="output_top"></p>
+                <p id="output_top2"></p>
+                <p id="output_top2_image"></p>
+            </div>
             <div class="message">
-                <div class="partner"></div>
+                <div class="partner"><p id="output_top"></p></div>
                 <div class="me"></div>
             </div>
 
@@ -87,15 +84,17 @@
     <script type="module">
         // Import the functions you need from the SDKs you need
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js";
-        import { getDatabase, ref, push, set, onChildAdded, remove, onChildRemoved }
+        import { getDatabase, ref, push, set, onChildAdded, remove, onChildRemoved, onValue }
             from "https://www.gstatic.com/firebasejs/9.1.0/firebase-database.js";
         // Your web app's Firebase configuration
+        // import {firebaseConfig} from "../kadai04__chat_20231111/setting/firebase_api.js";
         const firebaseConfig = {
-            //削除
-        };
+            //  削除
+    };
         const app = initializeApp(firebaseConfig); //鍵を開ける
         const db = getDatabase(app); //RealtimeDBに接続
         const dbRef = ref(db, "chat"); //RealtimeDB内の"chat"を使う　”natus"でもよい
+        const dbReff = ref(db, "name");
 
         //ユーザー側
         $('#send').on('click', function(){
@@ -157,7 +156,7 @@
         function applyTextTransformations(text) {
             if (text) {
                 return text
-                    .replace(/疲れた/g, 'ベホイミ')
+                    .replace(/疲れた/g, 'ベホイミ唱えて')
                     .replace(/無理/g, '諦めたらそこで試合終了ですよ')
                     .replace(/うざ/g, '存在感すご');
             } else {
@@ -172,7 +171,7 @@
             // console.log(key);
             const retext = applyTextTransformations(msg.text);
             const rerText = applyTextTransformations(msg.rtext);
-
+            
             if(retext !== '') {
                 let html = `
                 <div class="b-right-wrapper message">
@@ -203,6 +202,7 @@
 
         });
 
+        // モーダルで会話保存
         var modal = document.getElementById("myModal");
         var span = document.getElementsByClassName("close")[0];
 
@@ -233,6 +233,144 @@
             localStorage.setItem('savedMessages', JSON.stringify(savedMessages));  //更新された配列をローカルストレージに保存
         });
         
+        // TOPページで保存した名前画像を表示
+        onValue(dbReff, (snapshot) => {
+            const nameData = snapshot.val();
+            updateNameUI(nameData);
+        });
+
+        function updateNameUI(nameData) {
+            let keys = Object.keys(nameData);
+            let lastAddedName = '', lastAddedPic = '';
+            let secondLastAddedName = '', secondLastAddedPic = '';
+
+            // 最後のデータを取得
+            let lastKey = Object.keys(nameData).pop(); // 最後のキーを取得
+            let lastData = nameData[lastKey]; // 最後のデータを取得
+            console.log(lastData);
+            console.log(lastData.youpic);
+
+            // 最後から2番目のデータを取得
+            if (keys.length >= 2) {
+                let secondLastKey = keys[keys.length - 2];
+                let secondLastData = nameData[secondLastKey];
+                secondLastAddedName = secondLastData.myname || '';
+                secondLastAddedPic = secondLastData.mypic || '';
+            }
+
+            // HTML要素にデータをセット
+            $('#output_top').text(lastData.youname); // 最後のデータ
+            $('#output_top2').text(secondLastAddedName); // 最後から2番目のデータ
+
+            // 画像表示
+            let html = `
+            <img class="user" src="${lastData.youpic}" alt="User Image">
+            `;
+            $('#output_top_image').append(html);
+            let htmll = `
+            <img class="user" src="${secondLastAddedPic}" alt="User Image">
+            `;
+            $('#output_top2_image').append(htmll);
+        };
+
+        // onValue(dbReff, (snapshot) => {
+        // const nameData = snapshot.val();
+        // updateNameUI(nameData);
+
+        //     function updateNameUI(nameData) {
+        //         let lastAddedName = '';
+        //         let lastAddedPic = '';
+
+        //         // Firebaseから取得したデータの中から最後のデータを取得
+        //         let lastKey = Object.keys(nameData).pop(); // 最後のキーを取得
+        //         let lastData = nameData[lastKey]; // 最後のデータを取得
+
+        //         console.log(lastData);
+        //         console.log(lastData.youname);
+
+        //         $('#output_top').text(lastData.youname);
+
+        //     }
+
+        //     function updateNameUI(nameData) {
+        //         let secondLastAddedName = '';
+        //         let secondLastAddedPic = '';
+
+        //         // キーの配列を取得
+        //         let keys = Object.keys(nameData);
+
+        //         // 最後から2番目のキーを取得
+        //         if (keys.length >= 2) {
+        //             let secondLastKey = keys[keys.length - 2];
+        //             let secondLastData = nameData[secondLastKey];
+
+        //             if (secondLastData) {
+        //                 secondLastAddedName = secondLastData.myname || '';
+        //                 secondLastAddedPic = secondLastData.mypic || '';
+        //             }
+        //         }
+
+        //         console.log('Second last added name:', secondLastAddedName); // 確認のためのログ
+        //         console.log('Second last added pic:', secondLastAddedPic); // 確認のためのログ
+
+        //         // HTML要素に最新の名前をセット
+        //         $('#output_top2').text(secondLastAddedName);
+        //         // 必要であれば、画像も表示する
+        //         // $('#output_top_image').attr('src', secondLastAddedPic);
+        //     }
+
+        // });
+
+
+
+
+        // onValue(dbReff, (snapshot) => {
+        //     const nameData = snapshot.val();
+        //     console.log(nameData);
+        //     updateNameUI(nameData);
+        // });
+
+        // // "output_top"に名前を表示する関数
+        // function updateNameUI(nameData) {
+        //     // nameDataから必要なデータを取り出す
+        //     // 例：最後に追加された名前を表示する
+        //     let lastAddedName = '';
+        //     for (const key in nameData) {
+        //         if (nameData.hasOwnProperty(key)) {
+        //             lastAddedName = nameData[key].myname; // 仮にmynameプロパティが名前を保持しているとします
+        //         }
+        //     }
+
+        //     // HTML要素に名前をセット
+        //     $('#output_top').text(lastAddedName);
+        // };
+
+            // UIを更新する関数
+            // function updateUI(data) {
+            //     let htmlContent = '';
+            //     for (const key in data) {
+            //         if (data.hasOwnProperty(key)) {
+            //             const user = data[key];
+
+            //             // HTMLテンプレートを作成
+            //             htmlContent += `
+            //                 <div class="b-right-wrapper message">
+            //                     <div class="b-right">
+            //                         <div class="${key}">
+            //                             <p class="user">${user.myname}</p>
+            //                             <img class="user" src="${user.mypic}" alt="User Image">
+            //                         </div>
+            //                     </div>
+            //                 </div>
+            //             `;
+            //         }
+            //     }
+
+            //     // HTML要素に追加
+            //     $('#output_top').html(htmlContent);
+            // }
+        // });
+
         //最初にデータ取得＆onSnapshotでリアルタイムにデータを取得
         // onChildAdded(dbRef, function(data) { //成功したらdataにデータが入る onChildAddedはfirebaseのもの、JSではない
         //     const msg = data.val();

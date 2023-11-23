@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/top.css">
+    <link rel="stylesheet" href="src/vendor/tailwind/tailwind.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<header>
+    <header>
+        <div class="top_icon">
+            <p class="top-logo" onclick="location.href='top.html'"><img src="img/icon.png" alt=""></p>
+        </div>
+    </header>
+</header>
+<body>
+    <div class="container">
+        <div class="register">
+            <div class="my_name">
+                <p class="name_register">お名前</p>
+                <input type="name" id="mname" class="input_name">
+                <p class="name_register">好きなアイコンを選んでね！</p>
+                <ul class="gazou">
+                    <li class="gazou1"><img src="img/dog.png" alt=""></li>
+                    <li class="gazou1"><img src="img/cat.png" alt=""></li>
+                    <li class="gazou1"><img src="img/penguin.png" alt=""></li>
+                    <li class="gazou1"><img src="img/dolphin.png" alt=""></li>
+                </ul>
+                <a href="#" id="determin1" class="shadow_btn01"><span>決定！</span></a>
+            </div>
+            <div class="your_name">
+                <p class="your_register">お名前</p>
+                <input type="name" id="yname" class="input_name">
+                <p class="name_register">好きなアイコンを選んでね！</p>
+                <ul class="gazou">
+                    <li class="gazou2"><img src="img/dog.png" alt=""></li>
+                    <li class="gazou2"><img src="img/cat.png" alt=""></li>
+                    <li class="gazou2"><img src="img/penguin.png" alt=""></li>
+                    <li class="gazou2"><img src="img/dolphin.png" alt=""></li>
+                </ul>
+                <a href="#" id="determin2" class="shadow_btn01"><span>決定！</span></a>
+            </div>
+        </div>
+        
+    </div>
+    <div class="name_img">
+        <div id="output"></div>
+        <div id="output2"></div>
+    </div>
+    <div class="determin">
+        <a href="index.html" class="background_btn04">
+            <i class="fa-solid fa-fish"></i>
+            <i class="fa-solid fa-fish"></i>
+            <i class="fa-solid fa-fish"></i>＞＞＞
+        </a>
+    </div>
+</body>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js";
+    import { getDatabase, ref, push, set, onChildAdded, remove, onChildRemoved }
+        from "https://www.gstatic.com/firebasejs/9.1.0/firebase-database.js";
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+        // 削除
+    };
+    const app = initializeApp(firebaseConfig); //鍵を開ける
+    const db = getDatabase(app); //RealtimeDBに接続
+    const dbRef = ref(db, "name"); //RealtimeDB内の"chat"を使う　”natus"でもよい
+
+    // imageの取得
+    $(document).ready(function(){
+        var myPic;
+
+        $(".gazou1").click(function(){
+            myPic = $(this).children('img').attr('src');
+            console.log(myPic);
+
+            // firebaseに名前と画像を保存
+            $('#determin1').on('click', function() {
+                const myname = $('#mname').val();
+
+                console.log(myname);
+                console.log(myPic);
+
+                const rst = {
+                myname: myname,
+                mypic: myPic,
+                }
+
+                const newPostRef = push(dbRef);
+                set(newPostRef, rst);
+
+                    // HTMLにデータを表示
+                let html = `
+                    <div class="b-right-wrapper message" id="message-${newPostRef.key}">
+                        <div class="b-right">
+                            <div class="${newPostRef.key}">
+                                <p class="user">${myname}</p>
+                                <img class="user" src="${myPic}" alt="User Image">
+                                <button class="delete-btn" data-key="${newPostRef.key}">削除</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                $('#output').append(html);
+
+                $('#mname').val("");
+                });
+
+                // 削除ボタンのクリックイベント
+                $('#output').on('click', '.delete-btn', function() {
+                    const key = $(this).data('key');
+
+                    // Firebaseの特定のデータ参照を取得
+                    const itemRef = ref(db, key);
+
+                    // Firebaseから該当データを削除
+                    remove(itemRef)
+                        .then(() => {
+                            // HTMLからも削除
+                            $(`#message-${key}`).remove();
+                        })
+                        .catch((error) => {
+                            console.error("Error removing document: ", error);
+                        });
+                });
+        });
+    });
+
+    // image２の取得
+    $(document).ready(function(){
+    $(".gazou2").click(function(){
+        var src = $(this).children('img').attr('src');
+        const youPic = src;
+        console.log(youPic);
+
+        // firebaseに名前と画像を保存
+        $('#determin2').on('click', function() {
+            const youname = $('#yname').val();
+
+            console.log(youname);
+            console.log(youPic);
+
+            const rst = {
+            youname: youname,
+            youpic: youPic,
+            }
+
+            const newPostRef = push(dbRef);
+            set(newPostRef, rst);
+
+            // HTMLにデータを表示
+            let html = `
+                <div class="b-right-wrapper message" id="message-${newPostRef.key}">
+                    <div class="b-right">
+                        <div class="${newPostRef.key}">
+                            <p class="user">${youname}</p>
+                            <img class="user" src="${youPic}" alt="User Image">
+                            <button class="delete-btn" data-key="${newPostRef.key}">削除</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            $('#output2').append(html);
+
+            $('#yname').val("");
+            });
+
+            // 削除ボタンのクリックイベント
+            $('#output2').on('click', '.delete-btn', function() {
+                const key = $(this).data('key');
+
+                // Firebaseの特定のデータ参照を取得
+                const itemRef = ref(db, key);
+
+                // Firebaseから該当データを削除
+                remove(itemRef)
+                    .then(() => {
+                        // HTMLからも削除
+                        $(`#message-${key}`).remove();
+                    })
+                    .catch((error) => {
+                        console.error("Error removing document: ", error);
+                    });
+            });
+
+        });
+    });
+
+
+
+</script>
+</html>

@@ -1,12 +1,15 @@
-* {
+  * {
     box-sizing: border-box;
     width: 100%;
     color: #6a4949;
   }
   body {
     width: 100%;
-    /* background-color: yellow;
-    display: flex; */
+    /* background-color: #FED154; */
+  }
+  .top_icon {
+    width: 5%;
+    margin: 10px auto auto 20px;
   }
   h1 {
     text-align: center;
